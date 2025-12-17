@@ -23,13 +23,7 @@ SelectiveTestingSample/
 ```
 
 ### Dependency Graph
-
-```
-    Core
-    ├── FeatureA
-    └── FeatureB
-        └── App (depends on both)
-```
+<img width="518" height="347" alt="graph" src="https://github.com/user-attachments/assets/9a43739b-c448-409a-bb91-eb4afa61ff8f" />
 
 ## How Selective Testing Works
 
