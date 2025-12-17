@@ -1,0 +1,42 @@
+
+name: Run Unit Tests
+on:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}/ios/test
+  cancel-in-progress: true
+
+env:
+  TUIST_TOKEN: ${{ secrets.TUIST_TOKEN }}
+
+jobs:
+  install-pods:
+    runs-on: macos-15
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        id: cache-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: Tuist/.build
+          key: ${{ runner.os }}-${{ hashFiles('Tuist/Package.resolved') }}
+
+      - name: Install Mise
+        uses: jdx/mise-action@v2
+
+      - name: Install Packages
+        run: tuist install
+
+      - name: Test
+        run: tuist test
+
+      - name: Save cache
+        id: cache-save
+        uses: actions/cache/save@v4
+        with:
+          path: Tuist/.build
+          key: ${{ steps.cache-restore.outputs.cache-primary-key }}
