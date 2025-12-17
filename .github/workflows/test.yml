@@ -8,8 +8,8 @@ concurrency:
   group: ${{ github.ref }}/ios/test
   cancel-in-progress: true
 
-env:
-  TUIST_TOKEN: ${{ secrets.TUIST_TOKEN }}
+permissions:
+  id-token: write
 
 jobs:
   install-pods:
@@ -27,6 +27,9 @@ jobs:
 
       - name: Install Mise
         uses: jdx/mise-action@v2
+
+      - name: Log into Tuist
+        run: tuist auth login
 
       - name: Install Packages
         run: tuist install
